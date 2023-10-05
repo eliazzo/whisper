@@ -2,10 +2,9 @@ import OpenAI from "openai";
 import fs from "fs";
 
 const configuration = ({ apiKey: process.env.OPENAI_API_KEY });
-console.log(configuration)
 
 
-// const openai = new OpenAI({ apiKey: "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" } );
+const openai = new OpenAI(configuration);
 
 // async function main() {
 //   const transcription = await openai.audio.transcriptions.create({

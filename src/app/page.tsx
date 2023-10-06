@@ -24,8 +24,10 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Convert audio to text</h1>
-      <p>"src/app/Apollinaire-Guillaume_01_Le-Pont-Mirabeau_1913.mp3</p>
+      <form action="">
+        <h2>Upload your mp3 file</h2>
+        <input name="file" type="file"/>
+      </form>
     </main>
   )
 }

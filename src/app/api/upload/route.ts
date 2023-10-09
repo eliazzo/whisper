@@ -1,35 +1,31 @@
-import { writeFile, readFile } from 'fs/promises'
-import { NextRequest, NextResponse } from 'next/server'
+import { writeFile, readFile } from "fs/promises";
+import { NextRequest, NextResponse } from "next/server";
 
-import { transcribe } from '../whisper/route'
+import { transcribe } from "../whisper/route";
 
 export async function POST(request: NextRequest) {
-    const data = await request.formData()
-    const file: any | null = data.get('file') as unknown as File
+  const data = await request.formData();
+  const file: any | null = data.get("file") as unknown as File;
 
-    if (!file) {
-        return NextResponse.json({ success: false })
-    }
+  if (!file) {
+    return NextResponse.json({ success: false });
+  }
 
-    try {
+  try {
+    const tempFilePath = `src/app/temporary/uploaded_audio.wav`; // Change the file extension if necessary
 
-        const tempFilePath = `src/app/temporary/uploaded_audio.wav`; // Change the file extension if necessary
+    const buffer = Buffer.from(await file.arrayBuffer());
 
+    await writeFile(tempFilePath, buffer);
 
-        const buffer = Buffer.from(await file.arrayBuffer());
+    const transcriptionResult = await transcribe(tempFilePath);
 
-        await writeFile(tempFilePath, buffer);
-
-        const transcriptionResult = await transcribe(tempFilePath);
-
-
-        return NextResponse.json({ success: true, transcription: transcriptionResult });
-
-    }
-    catch (error) {
-        console.error(error);
-        return NextResponse.json({ success: false, error: error.message });
-    }
+    return NextResponse.json({
+      success: true,
+      transcription: transcriptionResult,
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, error: error.message });
+  }
 }
-
-

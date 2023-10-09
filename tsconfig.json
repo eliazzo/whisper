@@ -25,11 +25,11 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
-  
+
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS",
-      "esModuleInterop": true,
+      "esModuleInterop": true
     }
-  },
+  }
 }

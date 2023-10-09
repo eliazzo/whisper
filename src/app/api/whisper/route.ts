@@ -1,8 +1,7 @@
 import OpenAI from "openai";
 import fs from "fs";
 
-const configuration = ({ apiKey: process.env.OPENAI_API_KEY });
-
+const configuration = { apiKey: process.env.OPENAI_API_KEY };
 
 const openai = new OpenAI(configuration);
 
@@ -13,11 +12,4 @@ export async function transcribe(upload: any) {
   });
 
   console.log(transcription.text);
-
 }
-
-
-
- 
-
-

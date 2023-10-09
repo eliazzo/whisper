@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect } from "react";
-import upload from "./api/upload/route";
+import { useState } from "react";
+import { FormEvent } from 'react'
+
 
 
 export default function Home() {
@@ -23,43 +24,40 @@ export default function Home() {
   //   getTranscription()
   // })
 
- async function handleFormSubmit(event: any) {
+const [file, setFile] = useState<File>()
+ async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); // Prevent the default form submission behavior
+    if (!file) return
   
-    const form = event.target;
-    const formData = new FormData(form);
+    try {
+    const formData = new FormData(event.currentTarget)
+    formData.set('file', file)
   
-   await fetch('/api/upload', {
+   const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response from the API route
-        if (data.message) {
-          // Show a success message or perform any other actions
-          console.log(data.message);
-        } else {
-          // Handle errors from the API route
-          console.error(data.error);
-        }
-      })
-      .catch((error) => {
-        // Handle network or other errors
-        console.error('Error:', error);
-      });
-  }
+    }
+    catch (e: any) {
+      // Handle errors here
+      console.error(e)
+    }
+
+ }
   
 
   return (
 
 
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <form action="/api/upload" method="POST" onSubmit={(event) => handleFormSubmit(event)}>
-        <h2>Upload your mp3 file</h2>
-        <input name="file" type="file"/>
-        <input type="submit" value="Upload File"></input>
-      </form>
+    <form onSubmit={handleFormSubmit}>
+      <input
+        type="file"
+        name="file"
+        onChange={(e) => setFile(e.target.files?.[0])}
+      />
+      <input type="submit" value="Upload" />
+    </form>
     </main>
   )
 }

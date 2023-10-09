@@ -1,28 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormEvent } from 'react'
 
 
-
 export default function Home() {
-
-  // useEffect(() => {
-  //   const getTranscription = async () => {
-  //     const response = await(fetch("/api/whisper", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //       body: JSON.stringify({ key: "./src/app/Apollinaire-Guillaume_01_Le-Pont-Mirabeau_1913.mp3" }) 
-  //     }))
-  //     if (response.ok) {
-  //     const data = await response.json()
-  //     console.log(data)
-  //     }
-  //   }
-  //   getTranscription()
-  // })
 
 const [file, setFile] = useState<File>()
  async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {

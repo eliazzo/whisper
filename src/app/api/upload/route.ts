@@ -1,10 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { writeFile } from 'fs/promises'
-import formidable from 'formidable';
-
-
 
 import { NextRequest, NextResponse } from 'next/server'
+
+import { transcribe } from '../whisper/route'
 
 export async function POST(request: NextRequest) {
   const data = await request.formData()
@@ -17,13 +15,18 @@ export async function POST(request: NextRequest) {
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
 
-  // With the file data in the buffer, you can do whatever you want with it.
-  // For this, we'll just write it to the filesystem in a new location
-  const path = `/tmp/${file.name}`
-  await writeFile(path, buffer)
-  console.log(`open ${path} to see the uploaded file`)
 
-  return NextResponse.json({ success: true })
+  try {
+    // Call your main function with the uploaded file
+    // const transcriptionResult = await transcribe(buffer);
+    console.log(bytes)
+    const transcriptionResult = "hello"
+
+    return NextResponse.json({ success: true, transcription: transcriptionResult });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, error: error.message });
+  }
 }
 
 

@@ -5,9 +5,14 @@ import { useState } from "react";
 import { FormEvent } from "react";
 import "./globals.css";
 
+export interface Result {
+  success: boolean;
+  transcription: string; 
+}
+
 export default function Home() {
   const [file, setFile] = useState<File>();
-  const [text, setText] = useState<Response>();
+  const [text, setText] = useState<string[]>([]);
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -15,11 +20,13 @@ export default function Home() {
     try {
       const formData = new FormData(event.currentTarget);
       formData.set("file", file);
-      const text = await fetch("/api/upload", {
+      const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
-      setText(text)
+      const data: Result = await response.json(); // Use the ApiResponse interface
+      const dataArr = data.transcription.split('\n');
+      setText(dataArr);
     } catch (e: any) {
       console.error(e);
     }
@@ -37,7 +44,7 @@ export default function Home() {
         />
         <input type="submit" value="Upload" />
       </form>
-      <output>{JSON.stringify(text)}</output>
+      <output>{text && <p>{text}</p>}</output>
       </div>
     </main>
   );

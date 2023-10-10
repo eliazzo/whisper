@@ -10,6 +10,6 @@ export async function transcribe(upload: any) {
     file: fs.createReadStream(upload),
     model: "whisper-1",
   });
-
-  console.log(transcription.text);
+  console.log(transcription.text)
+  return transcription.text
 }
